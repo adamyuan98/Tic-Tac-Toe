@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import "./Game.css"
 
-const Game = () => {
-  const nCols = 3
-  const nRows = 3
-  const goal = 3
+interface GameProps {
+  gridSize: [number, number]
+}
+
+const Game = ({ gridSize }: GameProps) => {
+  const nCols = gridSize[0]
+  const nRows = gridSize[1]
+  const goal = Math.min(gridSize[0], gridSize[1]) 
   const initSquares = Array(nRows * nCols).fill(null)
   const initNumMoves = 0
   const initTurn = "O"  // Mounting flips initial turn
@@ -34,10 +38,15 @@ const Game = () => {
     newSquares[id] = turn
     setSquares(newSquares)
   }
+  
+  useEffect(() => {
+    handleReset()
+  }, [nCols, nRows]);
+
   useEffect(() => {
     setTurn(turn == "X" ? "O" : "X")
     setWinner(getWinner())
-  }, [squares, target])
+  }, [squares, target]);
 
   useEffect(() => {
     let status = statusText
@@ -75,17 +84,23 @@ const Game = () => {
       : null
   }
 
+  const boardStyle = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${nCols}, 100px)`,
+    gridTemplateRows: `repeat(${nRows}, 100px)`,
+  };
+
   return (
-    <div className="Game">
+    <div className="game">
       <h2>{statusText}</h2>
-      <div className="board">      
+      <div style={boardStyle}>      
         {squares.map((value, index) => (
           <button key={index} onClick={()=>handleMove(index)} className="square">
           {value}
           </button>
         ))}
       </div>
-      <button className="Reset" onClick={handleReset}>Reset</button>
+      <button className="reset" onClick={handleReset}>Reset</button>
     </div>
   )
 }

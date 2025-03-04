@@ -1,0 +1,22 @@
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+}
+
+.square {
+  text-align: center;
+  cursor: pointer;
+}
+
+.reset {
+  /* align-self: self-start; */
+  margin-top: 1rem;
+}
